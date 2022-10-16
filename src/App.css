@@ -1,0 +1,54 @@
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+
+.App-header {
+  border-bottom:1px solid #fd5f03;
+  min-height: 4rem;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  padding-left: 2%;
+  
+}
+.App-content{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width:90%;
+}
+.App-link {
+  color: #61dafb;
+}
+
+.App-textArea{
+  width: 20rem;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .App-content{
+    width: 43.75rem
+  }
+  .App-textArea{
+    width: 25rem;
+  }
+}
