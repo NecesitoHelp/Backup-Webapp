@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { AppState, User, UserRequeriment } from '../../../../types';
 import InputUnstyled from '@mui/base/InputUnstyled';
 import {InputUnstyledProps}  from '@mui/base/InputUnstyled';
+import 'bootstrap/dist/css/bootstrap.css';
+import axios from 'axios';
+
+
 
 type UserOnboardingDataProps = 
 {
@@ -120,8 +124,9 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
                 phone:''}
                 setUserData(newUsuario);
         }
-
     }
+  
+    
     
     const goNext = () =>
     {
@@ -131,6 +136,9 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
         }
         else 
         {
+          axios.post('https://sheet.best/api/sheets/50a46321-f6e7-4bdf-b986-6ca9bfba6b5b', userData).then((response)=>{
+      
+      })
         setErrorMessage('')
         setSendingMessage('...Enviando')
         const newUser = {
@@ -139,7 +147,11 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
             }
         goForward({newUserData:newUser})
         }
+        
     }
+
+    
+    
     
     return (
         <>
