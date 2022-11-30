@@ -1,9 +1,10 @@
 import { Alert,  FormControl, TextareaAutosize } from '@mui/material';
 import React, { FC, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { User, UserRequeriment } from '../../../../types';
 import { BootstrapButton } from '../data';
+import axios from 'axios';
 
 
 
@@ -20,6 +21,7 @@ const UserOnboardingStart: FC<UserOnboardingStartProps> = ({goForward}) =>{
     const [reqDescription, setReqDescription] = useState("");
     const [errorMesage, setErrorMessage] = useState("")
 
+
     const changeReqDescription = (event:any) =>
     {
         setReqDescription(event.target.value)
@@ -33,10 +35,12 @@ const UserOnboardingStart: FC<UserOnboardingStartProps> = ({goForward}) =>{
         }
         else 
         {
+            
         setErrorMessage('')
         setSendingMessage('...Enviando')
+      
 
-        const userRequriment = 
+        const userRequeriment = 
         {
             id: Date.now().toString(),
             user: {} as User,
@@ -45,7 +49,7 @@ const UserOnboardingStart: FC<UserOnboardingStartProps> = ({goForward}) =>{
 
         } as UserRequeriment
 
-        goForward({newRequeriment:userRequriment})
+        goForward({newRequeriment:userRequeriment})
         }
     }
     
@@ -76,5 +80,3 @@ const dispatchStateToProps = (dispatch: any)=>{
 }
 
 export default connect( null, dispatchStateToProps)(UserOnboardingStart);
-
-

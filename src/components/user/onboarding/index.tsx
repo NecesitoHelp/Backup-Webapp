@@ -1,7 +1,7 @@
-import React, { FC,  } from 'react';
-import UserOnboardingStart from '../onboarding/start'
-import UserOnboardingData from '../onboarding/data'
-import UserOnboardingEnd from '../onboarding/end'
+import React, { FC } from 'react';
+import UserOnboardingStart from './start';
+import UserOnboardingData from './data';
+import UserOnboardingEnd from './end';
 import { AppState } from '../../../types';
 import { connect } from 'react-redux';
 

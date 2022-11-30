@@ -1,19 +1,18 @@
+import React, { FC, useState } from 'react';
 import { Alert, Button, FormControl, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
-import React, { FC, useState } from 'react';
-import { connect } from 'react-redux';
-import { AppState, User, UserRequeriment } from '../../../../types';
-import InputUnstyled from '@mui/base/InputUnstyled';
+import { HelperAppState, Helper } from '../../../../types';
 import {InputUnstyledProps}  from '@mui/base/InputUnstyled';
-import 'bootstrap/dist/css/bootstrap.css';
+import InputUnstyled from '@mui/base/InputUnstyled';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-
-type UserOnboardingDataProps = 
+type HelperOnboardingDataProps = 
 {
-    goForward: any,
-    userRequirement: UserRequeriment,
+    goForward: any
+   
 }
+
 export const BootstrapButton = styled(Button)({
     boxShadow: 'none',
     textTransform: 'none',
@@ -51,6 +50,7 @@ export const BootstrapButton = styled(Button)({
   });
 
 
+
 export  const StyledInputElement = styled('input')(
     ({ theme }) => `
     width: 20rem;
@@ -80,37 +80,53 @@ export  const StyledInputElement = styled('input')(
     );
   });
 
-const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
+  const HelperOnboardingStart: FC<HelperOnboardingDataProps> = (props) =>{
     
     const [sendingMessage, setSendingMessage] = useState("");
-    const [userData, setUserData] = useState({ name: '', lastName: '', phone: '' } as unknown as User);
+    const [helperData, sethelperData] = useState({ id: '', name: '', lastName: '', phone: '', ID: '', photo: '' } as unknown as Helper);
     const [errorMesage, setErrorMessage] = useState("")
-    const {goForward, userRequirement} = props
+    const {goForward} = props
 
     const regexPhone = /^[1-9]\d{9}$/g;
-
+    
     const updateName = (event:any)=>{
         setErrorMessage('')
         const newName = event.target.value;
-        const newUsuario = {...userData, 
+        const newUsuario = {...helperData, 
                 name:newName}
-                setUserData(newUsuario);
+                sethelperData(newUsuario);
     }
 
     const updateLastName = (event:any)=>{
         setErrorMessage('')
         const newLastName = event.target.value;
-        const newUsuario = {...userData, 
+        const newUsuario = {...helperData, 
                 lastName:newLastName}
-                setUserData(newUsuario);
+                sethelperData(newUsuario);
     }
 
     const updatePhone = (event:any)=>{
+      setErrorMessage('')
+      const newPhone = event.target.value;
+      const newUsuario = {...helperData, 
+              phone:newPhone}
+              sethelperData(newUsuario);
+  }
+
+    const updatePhoto = (event:any)=>{
         setErrorMessage('')
-        const newPhone = event.target.value;
-        const newUsuario = {...userData, 
-                phone:newPhone}
-                setUserData(newUsuario);
+        const newLastPhoto = event.target.value;
+        const newUsuario = {...helperData, 
+                photo:newLastPhoto}
+                sethelperData(newUsuario);
+    }
+
+    const updateID = (event:any)=>{
+        setErrorMessage('')
+        const newID = event.target.value;
+        const newUsuario = {...helperData, 
+          ID:newID}
+          sethelperData(newUsuario);
     }
 
     const validatePhone = (event:any) =>{
@@ -118,40 +134,30 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
         if(!newPhone.match(regexPhone))
         {
             setErrorMessage("Por favor, ingresa un teléfono válido (10 dígitos)")
-            const newUsuario = {...userData, 
+            const newUsuario = {...helperData, 
                 phone:''}
-                setUserData(newUsuario);
+                sethelperData(newUsuario);
         }
     }
-
+  
     const goNext = () =>
     {
-        if(userData.name==='' || userData.lastName==='' || userData.phone==='')
+        if(helperData.name==='' || helperData.lastname==='' || helperData.phone==='' || helperData.ID==='')
         {
             setErrorMessage("Debes completar tus datos de contacto")
         }
         else 
-        {          
-          
-          const datasave =  {
-            id: userRequirement.id,
-            name: userData.name,
-            lastname: userData.lastName,
-            phone: userData.phone,
-            request: userRequirement.description
-          }
-
-          //axios.post('https://sheet.best/api/sheets/822a66b0-ff41-4701-a93a-b0b0795b69dd', 
-          //datasave).then((response)=>{})
-          console.log(datasave)
+        {
           
         setErrorMessage('')
         setSendingMessage('...Enviando')
-        
         const newUser = {
-            ...userData,
+            ...helperData,
             id: Date.now().toString()
             }
+            console.log(newUser)
+          //axios.post('https://sheet.best/api/sheets/a94271fc-908e-462e-b839-6b09e7f7cbad', 
+          //newUser).then((response)=>{})
         goForward({newUserData:newUser})
         }
         
@@ -160,13 +166,15 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
     return (
         <>
         {errorMesage && <Alert severity="error">{errorMesage}</Alert>}
-        <h1>Vamos a buscar a un profesional {userRequirement.category!=='algo' ? `en ${userRequirement.category}` : '' } para ayudarte: </h1>
-        <p>¿Cómo podemos contactarte cuando tengamos al mejor profesional disponible: </p>
+        <h1> ¿Quieres prestar tus servicios? </h1>
+        <p>Inicia con el registro</p>
         <FormControl >
         <CustomInput  placeholder="Tu nombre *" onChange={updateName} name="name"/>
-        <CustomInput  placeholder="Tu apellido *" onChange={updateLastName} name="name"/>
-        <CustomInput  placeholder="Tu teléfono *" onChange={updatePhone} onBlur={validatePhone} name="phone"/>
-        <BootstrapButton onClick={goNext}>{sendingMessage!=='' ? sendingMessage : 'ENVIAR'}</BootstrapButton>
+        <CustomInput  placeholder="Tu apellido *" onChange={updateLastName} name="lastName"/>
+        <CustomInput  placeholder="Telefono *" onChange={updatePhone} onBlur={validatePhone} name="phone"/>
+        <CustomInput  placeholder="Tu identifiación *" onChange={updateID} name="ID"/>
+        <CustomInput  placeholder="Foto (Opcional)" onChange={updatePhoto} name="Photo"/>
+        <BootstrapButton onClick={goNext}>{sendingMessage!=='' ? sendingMessage : 'REGISTRARME'}</BootstrapButton>
         </FormControl>
         </>
     )
@@ -174,15 +182,12 @@ const UserOnboardingData: FC<UserOnboardingDataProps> = (props) =>{
 }
 
 const dispatchStateToProps = (dispatch: any)=>{
-    return { goForward: (value:{newUser: User})=>dispatch ({type:"UPDATE_USER_DATA", payload: value}),
+    return { goForward: (value:{newUser: Helper})=>dispatch ({type:"GO_FORWARD", payload: value}),
     }
 }
 
-const mapStateToProps = (state: AppState)=>{
-    return { userRequirement: state.userRequeriment }
+const mapStateToProps = (state: HelperAppState)=>{
+    return state
 }
 
-
-export default connect( mapStateToProps, dispatchStateToProps)(UserOnboardingData);
-
-
+export default connect( mapStateToProps, dispatchStateToProps)(HelperOnboardingStart);

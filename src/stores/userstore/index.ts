@@ -45,9 +45,7 @@ const reducer =  (state = initialState , action: any) => {
             step:2,
         }
     }
-    
-
-   
+       
     return state;
 }
 
